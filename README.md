@@ -1,24 +1,33 @@
-# DrugChat: Multi-Modal Large Language Model Enables All-Purpose Prediction of Drug Mechanisms and Properties
+# MetaboliteChat
 
-This repository holds the code of DrugChat. Read the biorxiv [preprint](https://www.biorxiv.org/content/10.1101/2024.09.29.615524).
+[//]: # (This repository holds the code of DrugChat. Read the biorxiv [preprint]&#40;https://www.biorxiv.org/content/10.1101/2024.09.29.615524&#41;.)
 
 
 
 ## Introduction
-- In this work, we make an initial attempt towards enabling ChatGPT-like capabilities on drug molecule graphs, by developing a prototype system DrugChat.
-- DrugChat works in a similar way as ChatGPT. Users upload a compound molecule graph and ask various questions about this compound. DrugChat will answer these questions in a multi-turn, interactive manner. 
-- The DrugChat system consists of a graph neural network (GNN), a convolutional neural network (i.e., ResNet), a large language model (LLM), and an adaptor. The GNN takes a compound molecule graph as input and learns a representation for this graph. The adaptor transforms the graph/image representation produced by the GNN/CNN into another representation that is acceptable to the LLM. The LLM takes the compound representation transformed by the adaptor and users' questions about this compound as inputs and generates answers. All these components are trained end-to-end.
-- To train DrugChat, we collected instruction tuning datasets.
+- In this work, we make an initial attempt towards enabling ChatGPT-like capabilities on metabolite molecule graphs, by developing a prototype system MetaboliteChat.
+- MetaboliteChat works in a similar way as ChatGPT. Users upload a compound molecule graph and ask various questions about this compound. MetaboliteChat will answer these questions in a multi-turn, interactive manner. 
+- The MetaboliteChat system consists of a graph neural network (GNN), a convolutional neural network (i.e., ResNet), a large language model (LLM), and an adaptor. The GNN takes a compound molecule graph as input and learns a representation for this graph. The adaptor transforms the graph/image representation produced by the GNN/CNN into another representation that is acceptable to the LLM. The LLM takes the compound representation transformed by the adaptor and users' questions about this compound as inputs and generates answers. All these components are trained end-to-end.
+- To train MetaboliteChat, we collected instruction tuning datasets.
 
 ![overview](figs/DrugChat.png)
 
 ## Datasets
 
 Please download the data json files from the [Hugging Face](https://huggingface.co/datasets/youweiliang/drugchat). The structure of each dataset is described in [scalable_data_format.md](scalable_data_format.md).
+Metabolite is based on [Drugchat](https://www.techrxiv.org/users/690900/articles/681845-drugchat-towards-enabling-chatgpt-like-capabilities-on-drug-molecule-graphs). We collected dataset from [HMDB](https://hmdb.ca/metabolites) and converted the data in the required format. 
 
+The dataset pre-processing includes two parts:
+1. Crawl data from the dataset and store it locally:
+    - We need to collect following properties for each of the metabolite: Description, Description, Physical Properties(Experimental Molecular Properties, Experimental Chromatographic Properties), Biological Properties(Cellular Locations, Biospecimen Locations, Biospecimen Locations) and Associated Disorders and Diseases.
+    - Since some physical properties are absent in the official dataset (the .xml file), we have used dataset/crawl.py to crawl all the data and store them into html files. Next we execute the read_test.py to convert the xml file to the json file.
+    - To get statistical information or plot pictures, refer to statistic.py, classification_dataset_extraction.py and category_plot.py. 
+2. Create question-answer pairs to fine-tune model:
+    
+    - To generate the question-answer pairs, execute the dataset/QA_generate(v2/pure).py file. The v2 file adds random options to question while pure don’t. 
 
 ## System Requirements
-The DrugChat was tested on Ubuntu 20.04 with an Nvidia A100 80G GPU (Nvidia driver version: 560.35.03). Other Linux systems and GPUs (with more than 40 GB GPU memory) should also work. The Python environment was based on [Miniconda](https://docs.anaconda.com/miniconda/miniconda-install/) 23.1.0. You can install the latest Nvidia driver and the latest Minicond, as they should not make any difference. The complete list of software requirements is specified in [environment.yml](environment.yml).
+The MetaboliteChat was tested on Ubuntu 20.04 with an Nvidia A100 80G GPU (Nvidia driver version: 560.35.03). Other Linux systems and GPUs (with more than 40 GB GPU memory) should also work. The Python environment was based on [Miniconda](https://docs.anaconda.com/miniconda/miniconda-install/) 23.1.0. You can install the latest Nvidia driver and the latest Minicond, as they should not make any difference. The complete list of software requirements is specified in [environment.yml](environment.yml).
 
 
 ## Installation
@@ -105,12 +114,12 @@ This repo is based on the following repositories.
 + [Snap-stanford-gnn](https://github.com/snap-stanford/pretrain-gnns/)
 
 
-## License
+## License ??
 This repository is under [BSD 3-Clause License](LICENSE.md).
 Many codes are based on [MiniGPT-4](https://github.com/Vision-CAIR/MiniGPT-4) with BSD 3-Clause License [here](LICENSE_MiniGPT4.md), which is based on [Lavis](https://github.com/salesforce/LAVIS) with BSD 3-Clause License [here](LICENSE_Lavis.md).
 
 
-## Disclaimer
+## Disclaimer ??
 
 This is a prototype system that has not been systematically and comprehensively validated by pharmaceutical experts yet. Please use with caution. 
 
