@@ -14,7 +14,6 @@
 
 ## Datasets
 
-Please download the data json files from the [Hugging Face](https://huggingface.co/datasets/youweiliang/drugchat). The structure of each dataset is described in [scalable_data_format.md](scalable_data_format.md).
 Metabolite is based on [Drugchat](https://www.techrxiv.org/users/690900/articles/681845-drugchat-towards-enabling-chatgpt-like-capabilities-on-drug-molecule-graphs). We collected dataset from [HMDB](https://hmdb.ca/metabolites) and converted the data in the required format. 
 
 The dataset pre-processing includes two parts:
